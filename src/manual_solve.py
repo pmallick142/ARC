@@ -1,6 +1,10 @@
 #!/usr/bin/python
+'''
 
-#test commit
+Student Name: Pradip Mallick
+Student Id: 20236170
+
+'''
 
 import os, sys
 import json
@@ -12,15 +16,44 @@ import re
 ### result. Name them according to the task ID as in the three
 ### examples below. Delete the three examples. The tasks you choose
 ### must be in the data/training directory, not data/evaluation.
-def solve_6a1e5592(x):
-    return x
 
-def solve_b2862040(x):
+color_code = {'black': 0, 'blue': 1, 'red': 2, 'green': 3, 'yellow': 4, 'gray': 5, 'magenta': 6, 'orange': 7, 'sky': 8, 'brown': 9}
+
+def solve_007bbfb7(x):
+    resample_x = x.repeat(3, axis=0)
+    resample_x = resample_x.repeat(3, axis=1)
+    tile_x = np.tile(x, (3, 3))
+    x = resample_x & tile_x
     return x
 
 def solve_05269061(x):
+    colors = np.repeat(color_code['black'], 3)
+    dimens, elems = x.shape
+    
+    for dimen in range(dimens):
+        for elem in range(elems):
+            color = x[dimen, elem]
+            if color != 0:
+                colors[(dimen + elem) % 3] = color
+    
+    x = x.copy()
+    for dimen in range(dimens):
+        for elem in range(elems):
+            x[dimen, elem] = colors[(dimen + elem) % 3]
     return x
 
+def solve_08ed6ac7(x):
+    dimens, elems = x.shape
+    x = x.copy()    
+    colors = [color_code['blue'], color_code['red'], color_code['green'], color_code['yellow']]
+    colors_idx = 0
+    for dimen in range(dimens):
+        for elem in range(elems):
+            if x[dimen, elem] == color_code['gray']:
+                for y in range(dimen, dimens):
+                    x[y, elem] = colors[colors_idx]
+                colors_idx += 1
+    return x
 
 def main():
     # Find all the functions defined in this file whose names are
